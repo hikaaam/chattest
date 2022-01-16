@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User A</title>
+    <script
+      src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+      integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="height: hv100">
+    <div class="container">
+      <div id="chatroom"></div>
+      <div style="display: flex">
+        <input type="text" class="form-control" id="chatinput" />
+        <button class="btn btn-success" onclick="sendChat()" />
+      </div>
+    </div>
+    <script lang="ts">
+      const host = "http://127.0.0.1:6969";
+      const socket = io(host);
+      const sendChat = () => {
+        try {
+          const chatInput = document.getElementById("chatinput").value;
+          socket.emit("Chat", {
+            message: chatInput,
+            user: "usera",
+          });
+          document.getElementById(
+            "chatroom"
+          ).innerHTML += `<div>${'me : '}: ${chatInput}</div>`;
+          document.getElementById("chatinput").value = "";
+        } catch (e) {
+          console.log(e);
+        }
+      };
+      socket.on("Chat", (data) => {
+        document.getElementById(
+          "chatroom"
+        ).innerHTML += `<div>${data.user}: ${data.message}</div>`;
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+typescript
+express
+@types/node
+@types/express
+socket.io
+@types/socket.io
